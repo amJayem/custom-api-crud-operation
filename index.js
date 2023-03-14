@@ -5,7 +5,8 @@ const routes = require('./routes/routes')
 const app = express();
 const port = 8000;
 
-app.use('/api',routes);
+app.use('/',routes);
+app.use(express.static('public'));
 
 app.listen(port, () => {
   console.log(`Server started on port http://localhost:${port}`);
