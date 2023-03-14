@@ -7,12 +7,27 @@ router.use(express.json());
 // getting all data from users collection
 router.get("/users", async (req, res) => {
   const result = await userModel.find();
-  res.status(201).send(result);
-  // data is consoled when this route will be hit
-  console.table({ result });
-  result.map((r) =>
-    console.log("name: ", [r.name], "email: ", [r.email], "age: ", [r.age])
-  );
+  res.status(201).send(`
+  <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+     ${result.map(
+       (user) =>
+         `<tr>
+         <td>${user.name}</td>
+         <td>${user.age}</td>
+         <td>${user.email}</td>
+       </tr>`
+     )} 
+      </tbody>
+    </table>
+    `);
 });
 
 // storing user data to users collection
@@ -40,7 +55,6 @@ router.put("/update-user/:id", async (req, res) => {
       new: true,
     });
     res.status(201).send(updatedUser);
-
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
